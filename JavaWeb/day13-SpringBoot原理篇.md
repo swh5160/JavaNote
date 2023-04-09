@@ -2091,7 +2091,63 @@ web后端开发现在基本上都是基于标准的三层架构进行开发的�
 
 
 
+```
+@Override
+@Transactional
+public String importStudentTemplate(List<StudentTemplate> list) {
+    int successNum = 0;
+    StringBuilder sb = new StringBuilder();
+    for (StudentTemplate template : list) {
+        if (StringUtils.isEmpty(template.getSno())) {
+            throw new RuntimeException("学号不可为空");
+        }
+        Student student = studentMapper.selectBySno(template.getSno());
+        if (ObjectUtils.isNotEmpty(student)) {
+            throw new RuntimeException("学号 " + template.getSno() + " 已存在");
+        }
+        try {
+            //业务处理
+            template.setUsername(template.getSno());
+            //密码加密
+            template.setPassword(Md5Utils.toMD5(template.getPassword()));
+            //处理下学院，优化导入体验,用list接防止出现多条名称相同的
+            QueryWrapper<Subject> queryWrapper = new QueryWrapper();
+            queryWrapper.eq("name",template.getAcademy());
+            List<Subject> subjects = subjectMapper.selectList(queryWrapper);
+            QueryWrapper<Subject> wrapper = new QueryWrapper();
+            wrapper.eq("name",template.getMajor());
+            wrapper.eq("parent_id",subjects.get(0).getId());
+            List<Subject> s = subjectMapper.selectList(wrapper);
+            template.setAcademy(subjects.get(0).getId().toString());
+            template.setMajor(s.get(0).getId().toString());
+            //如果三个都有数据再给导入到宿舍床位，不然就只导入学生信息
+            if (template.getBuildName()!=null && template.getBedName()!= null && template.getRoomName()!= null){
+                //查找宿舍楼id和宿舍的id
+                Long buildId = studentMapper.selectBuildId(template.getBuildName());
+                Long roomId = studentMapper.selectRoomId(buildId,template.getRoomName());
+                RoomBed bed = studentMapper.selectRoomBed(roomId,template.getRoomName());
+                if (bed.getStudentId()== null ||bed.getStudentId().equals("")){
+                    throw new RuntimeException("学号 " + template.getSno() + " 导入失败！床位已有学生入住。");
+                }
+                studentMapper.insertTemplate(template);
+                //维护学生床位信息
+                RoomBed updateBed = new RoomBed();
+                updateBed.setId(bed.getId());
+                updateBed.setStudentId(Long.valueOf(template.getId()));
+                updateBed.setSno(template.getSno());
+                roomBedMapper.updateById(updateBed);
+            }
+            sb.append(template.getSno() + ",");
 
+            successNum++;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException("数据格式错误，学号为：" + template.getSno());
+        }
+    }
+    return "导入成功条数：" + successNum + "，学号：" + sb.toString() ;
+}
+```
 
 
 
