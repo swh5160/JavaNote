@@ -1,4 +1,4 @@
-# 瑞吉外卖-Day02
+# 施子安外卖-Day02
 
 ## 课程内容
 
@@ -73,9 +73,15 @@ E. 如果未登录, 则返回未登录结果
 
 
 
-### /**/过滤器拦截器区别面试题
+### <font color=red>过滤器拦截器区别面试题</font>
 
 ![image-20230409093301130](assets/image-20230409093301130.png)
+
+- *接口规范不同：过滤器需要实现Filter接口，而拦截器需要实现HandlerInterceptor接口。*
+- *拦截范围不同：过滤器Filter会拦截所有的资源，而Interceptor只会拦截Spring环境中的资源*。
+- *重写方法不同：过滤器一遍重写一个doFilter方法就可以，对资源处理，init初始化destory销毁资源；而拦截器需要重写preHandle（拦截目标资源之前）返回true放行、postHandle（拦截目标资源之后）、afterCompletion（视图渲染完毕执行）三个方法*
+
+<font color=gold >过滤器java三大组件、拦截器属于spring;过滤器>拦截器;一般项目中微服务都使用拦截器</font>
 
 ### 1.3 代码实现
 
