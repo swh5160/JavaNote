@@ -972,6 +972,12 @@ type ：all全表扫描
 
 原文链接：https://blog.csdn.net/qq_27198345/article/details/116382587
 
+/**/
+
+面试题：三范式、反三范式
+
+![image-20230413100923766](assets/image-20230413100923766.png)
+
 ## 3.4 语法
 
 **创建索引**
