@@ -93,3 +93,5 @@ if中的j位置
 ![image-20230226175532844](assets/image-20230226175532844.png) 
 
 ## try-catch-finally
+
+**Try catch finally**体系当中，在return之前始终会执行finally里面的代码，如果finally里面有return，则数据跟随finally改变。如果没有return，则原数据不跟随finally里改变的数据改变

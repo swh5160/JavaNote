@@ -1087,5 +1087,97 @@ public R<String> update(HttpServletRequest request,@RequestBody Employee employe
 
 
 
+# 全局变量
 
+```java
+package com.shizian.ShizianTakeOut.common;
 
+/**
+ * @author 施子安
+ * @version 1.0
+ * @date 2023/4/9 10:23
+ * @Description 全局常量
+ */
+public class GlobalConstant {
+    /**
+     * 员工登录key
+     */
+    public static final String EMPLOYEE_KEY = "employee";
+    /**
+     * C端用户登录key
+     */
+    public static final String USER_KEY = "user";
+    /**
+     * 操作成功
+     */
+    public static final String SUCCESS = "操作成功";
+    /**
+     * 操作失败
+     */
+    public static final String FAIL = "操作失败";
+    /**
+     * 默认密码
+     */
+    public static final String DEFAULT_PASSWORD = "123456";
+
+    /**
+     * 签名
+     */
+    public static final String SIGN = "阿里云短信测试";
+    /**
+     * 签名模板
+     */
+    public static final String TEMPLATE_CODE = "SMS_154950909";
+
+    /**
+     * 手机号
+     */
+//    public static final String p
+
+}
+
+```
+
+# JSR303校验的简单使用以及自定义校验规则的代码编写
+
+```xml
+<!--校验框架-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+```
+
+## 注解	说明
+
+@NotNull	注解元素必须是非空
+@NotBlank	注解元素不能是空格并且至少包含一个字符
+@NotEmpty	注解元素不能为null或空
+@Email	该字符串必须是格式正确的电子邮件地址。
+@Null	注解元素必须是空
+@Digits	带注释的元素必须是可接受范围内的数字
+@Future	带注释的元素必须是未来的瞬间、日期或时间。
+@FutureOrPresent	注释元素必须是当前或未来的瞬间、日期或时间。
+@Past	带注释的元素必须是过去的瞬间、日期或时间。
+@PastOrPresent	带注释的元素必须是过去或现在的瞬间、日期或时间。
+@Max	带注释的元素必须是一个数字，其值必须小于或等于指定的最大值。
+@Min	带注释的元素必须是一个数字，其值必须大于或等于指定的最小值。
+@Pattern	带注释的 {@code CharSequence} 必须匹配指定的正则表达式。正则表达式遵循 Java 正则表达式约定
+@Size	验证元素大小是否在指定范围内
+@DecimalMax	带注释的元素必须是一个数字，其值必须小于或等于指定的最大值。
+@DecimalMin	带注释的元素必须是一个数字，其值必须大于或等于指定的最小值。
+@AssertTrue	被注释的元素必须为true
+@AssertFalse	被注释的元素必须为false
+@Positive	被注解的元素必须是整数
+@PositiveOrZero	被注解元素必须是正数或0
+
+| @URL    | 被注释的元素必须是合法的URL            |
+| ------- | -------------------------------------- |
+| @Length | 被注释的字符串的大小必须在指定的范围内 |
+| @Range  | 被注释的元素必须在合适的范围内         |
+
+https://blog.csdn.net/Mrzhuangr/article/details/124402768?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522168118447316800192260801%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=168118447316800192260801&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-10-124402768-null-null.142
+
+![image-20230413224539222](assets/image-20230413224539222.png)
+
+![image-20230413224741704](assets/image-20230413224741704.png)

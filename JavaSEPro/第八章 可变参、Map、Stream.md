@@ -667,3 +667,4 @@ IntStream/DoubleStream/LongStream
 - 由于里边都是基本数据所以是不可以调用方法，但是提供了一些比较方便数据获取和运算方法。
 
 ![image-20230303180234677](assets/image-20230303180234677.png)
+
