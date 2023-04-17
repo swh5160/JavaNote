@@ -1514,8 +1514,8 @@ public HeaderParser headerParser(){
 aliyun:
   oss:
     endpoint: https://oss-cn-shanghai.aliyuncs.com
-    accessKeyId: LTAI5t9MZK8iq5T2Av5GLDxX
-    accessKeySecret: C0IrHzKZGKqU8S7YQcevcotD3Zd5Tc
+    accessKeyId: *****
+    accessKeySecret: *****
     bucketName: web-framework01
 ~~~
 
