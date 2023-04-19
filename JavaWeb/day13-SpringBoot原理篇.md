@@ -35,12 +35,6 @@ server:
    port: 8082
 ~~~
 
-- application.yaml
-
-~~~yaml
-server:
-   port: 8082
-~~~
 
 
 
