@@ -805,6 +805,16 @@ git-log
 
 ![1578627921968](img/1578627921968.png)
 
+6、使用gitee和github进行仓库同步
+
+https://blog.csdn.net/feiying0canglang/article/details/126924821
+
+![image-20230423225133943](assets/image-20230423225133943.png)
+
+![image-20230423225201447](assets/image-20230423225201447.png)
+
+需要秘钥，点进去看具体指令，最后刷新同步保存
+
 ## 附录
 
 #### 团队协作练习

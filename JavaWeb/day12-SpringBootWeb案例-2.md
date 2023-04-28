@@ -957,11 +957,186 @@ public class UploadController {
 
  
 
+### 2.4 七⽜云上传图⽚
 
+##### 七⽜云设置部分
 
+###### 选择对象存储，进⼊到对象存储功能
 
+![image-20230425180928415](assets/image-20230425180928415.png)
 
+###### 新建空间，选择新建公开空间
 
+![image-20230425180947076](assets/image-20230425180947076.png)
+
+###### 进⼊新建的空间，记录域名
+
+![image-20230425181001799](assets/image-20230425181001799.png)
+
+###### 密钥管理中，新建密钥
+
+![image-20230425181016436](assets/image-20230425181016436.png)
+
+##### 代码部分
+
+###### 引⼊maven依赖
+
+```properties
+<!-- 七⽜云存储-->
+<dependency>
+    <groupId>com.qiniu</groupId>
+    <artifactId>qiniu-java-sdk</artifactId>
+    <version>7.2.25</version>
+</dependency>
+```
+
+###### 在controller中，确保能够接收前端传⼊的⽂件
+
+其中使用当前图片上传注入ioc容器有两种方式，下边有一种方式
+
+```java
+@PostMapping("/upload")
+public Result upload(@RequestParam("imgFile") MultipartFile multipartFile) {
+    log.info("⽂件上传，name:{},size:{}", multipartFile.getOriginalFilename(),
+    multipartFile.getSize());
+    //原始⽂件名
+    String originalFileName = multipartFile.getOriginalFilename();
+    //使⽤UUID构造不重复的⽂件名
+    String fileName =
+    System.currentTimeMillis()+"_"+UUID.randomUUID().toString().replace("-", "") + "_"
+    + originalFileName;
+    //获取输⼊流并上传
+    try (InputStream is = multipartFile.getInputStream()) {
+    	qiniuUtils.upload2Qiniu(is, fileName);
+    } catch (IOException e) {
+    	log.error("", e);
+   		return new Result(false, MessageConst.PIC_UPLOAD_FAIL);
+    }
+    //构造返回值
+    String pic = qiniuUtils.getUrlPrefix() + fileName;
+    return new Result(true, MessageConst.PIC_UPLOAD_SUCCESS, pic);
+}
+```
+
+###### 调⽤七⽜云sdk⼯具中的⽅法，完成上传
+
+```java
+package com.itheima.health.util;
+import com.qiniu.common.QiniuException;
+import com.qiniu.http.Response;
+import com.qiniu.storage.BucketManager;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.Region;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.util.Auth;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import java.io.InputStream;
+/**
+* @author zhangmeng
+* @description 七⽜云⼯具类
+* @date 2019/9/26
+**/
+@Slf4j
+@Setter
+@Getter
+public class QiniuUtils {
+    // 赋值⾃⼰的AK
+    private String accessKey;
+    // 赋值⾃⼰的SK
+    private String secretKey;
+    // http开头的域名
+    private String urlPrefix;
+    // 空间名称
+    private String bucket;
+    	/**
+        * 上传到七⽜云
+        *
+        * @param is 上传内容的输⼊流
+        * @param uploadFileName
+        */
+        public void upload2Qiniu(InputStream is, String uploadFileName) {
+            //构造⼀个带指定Zone对象的配置类
+            Configuration cfg = new Configuration(Region.autoRegion());
+            //...其他参数参考类注释
+            UploadManager uploadManager = new UploadManager(cfg);
+            Auth auth = Auth.create(accessKey, secretKey);
+            String upToken = auth.uploadToken(bucket);
+            try {
+                Response response = uploadManager.put(is, uploadFileName, upToken,null, null);
+                //解析上传成功的结果
+                log.info(response.bodyString());
+                // 访问路径
+                log.info("{}/{}", urlPrefix, uploadFileName);
+            } catch (QiniuException ex) {
+                Response r = ex.response;
+                log.error(r.toString());
+            try {
+            	log.error(r.bodyString());
+            } catch (QiniuException ex2) {
+                //ignore
+                log.error("", ex2);
+            }
+                throw new RuntimeException(ex);
+          }
+        }
+        /*** ⽂件不存在，则不作任何操作
+        * @param fileName
+		*/
+		public void deleteFileFromQiniu(String fileName) {
+            //构造⼀个带指定Zone对象的配置类
+            Configuration cfg = new Configuration(Region.autoRegion());
+            String key = fileName;
+            Auth auth = Auth.create(accessKey, secretKey);
+            BucketManager bucketManager = new BucketManager(auth, cfg);
+            try {
+            	bucketManager.delete(bucket, key);
+            } catch (QiniuException ex) {
+                if(612 == ex.code()){
+                // ⽂件不存在，则⽆需任何操作，直接返回
+                log.info("[七⽜云⼯具类-删除]重复删除，跳过:{}",fileName );
+            }else {
+                //如果遇到异常，说明删除失败
+                log.error("code:{}", ex.code());
+                log.error(ex.response.toString());
+                throw new RuntimeException(ex);
+            }
+         }
+     }
+}
+```
+
+**QiniuConfiguration.java**
+
+```java
+import com.itheima.health.util.QiniuUtils;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class QiniuConfiguration {
+
+    @ConfigurationProperties("qiniu")
+    @Bean
+    public QiniuUtils qiniuUtils() {
+        return new QiniuUtils();
+    }
+
+}
+```
+
+```xml
+#七牛配置
+qiniu:
+  urlPrefix: http://rc5k3g7g2.hn-bkt.clouddn.com/
+  accessKey: fhuiPBXFTZIgJdtZGuMtCUJ3zSrT7k3AHmVNE4UA
+  secretKey: zKKxCW_HjQmwtl4JI80nMT0Ve2V7VZDbqT4zt_tT
+  bucket: heiniuyun
+```
 
 
 
