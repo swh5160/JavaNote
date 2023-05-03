@@ -975,7 +975,7 @@ public Object recordTime(ProceedingJoinPoint pjp) throws Throwable {
 - @Before：前置通知，此注解标注的通知方法在目标方法前被执行
 - @After ：后置通知，此注解标注的通知方法在目标方法后被执行，无论是否有异常都会执行
 - @AfterReturning ： 返回后通知，此注解标注的通知方法在目标方法后被执行，有异常不会执行
-- @AfterThrowing ： 异常后通知，此注解标注的通知方法发生异常后执行
+- @AfterThrowing ：  知，此注解标注的通知方法发生异常后执行
 
 
 
@@ -1228,7 +1228,7 @@ public class MyAspect2 {
     //后置通知
     @After("execution(* com.itheima.service.*.*(..))")
     public void after(){
-        log.info("MyAspect2 -> after ...");
+        log.info("MyAspect2 -> after ..."); 
     }
 }
 
@@ -2030,29 +2030,29 @@ public class LogAspect {
 
 
 
+## 用户登录权限aop
+
+###### 自定义注解，用于存放用户名称
+
+![image-20230502113110695](assets/image-20230502113110695.png)
+
+###### 自定义切面类
+
+![image-20230502113207692](assets/image-20230502113207692.png)
+
+![image-20230502113220916](assets/image-20230502113220916.png)
+
+![image-20230502113238524](assets/image-20230502113238524.png)
+
+###### controller层用法
+
+![image-20230502113403959](assets/image-20230502113403959.png)
 
 
 
+###### 保存用户和角色之间关系
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![image-20230502113931132](assets/image-20230502113931132.png)
 
 
 

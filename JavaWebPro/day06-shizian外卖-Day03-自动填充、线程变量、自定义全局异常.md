@@ -1,3 +1,7 @@
+[TOC]
+
+
+
 # shizian外卖-Day03
 
 ## 课程内容
@@ -961,7 +965,7 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper,Setmeal> imple
 
 #### 4.5.3 代码实现
 
-**1). 创建自定义异常**
+##### **1). 创建自定义异常**
 
 在业务逻辑操作过程中,如果遇到一些业务参数、操作异常的情况下，我们直接抛出此异常。
 
