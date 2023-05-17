@@ -75,7 +75,7 @@ Redis在秒杀场景：https://blog.csdn.net/ggh0314/article/details/118405957
 
 
 
-### 面试==1.3 Redis快的原因==
+### ==面试1.3 Redis快的原因==
 
 **1.基于内存实现**
 
@@ -369,7 +369,7 @@ Redis 中字符串类型常用命令：
 
 更多命令可以参考Redis中文网：https://www.redis.net.cn
 
-### 面试题，节省空间
+### ==面试题，节省空间==
 
 采用二进制位，签到
 
