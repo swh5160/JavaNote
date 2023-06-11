@@ -1,3 +1,7 @@
+[TOC]
+
+
+
 # 数据库开发-MySQL
 
 # 1. 多表查询
@@ -716,6 +720,48 @@ DATE_FORMAT(date,format);
 | `%M %e, %Y`          | 4-Jul-13                        |
 | `%a, %d %b %Y %T`    | Thu, 04 Jul 2013 11:20:05       |
 
+## 1.10 行转列 列转行
+
+- 行转列
+
+![image-20230522112929619](assets/image-20230522112929619.png)
+
+- 列转行
+
+![image-20230522112950349](assets/image-20230522112950349.png)
+
+```sql
+##行转列
+SELECT * FROM t_score
+
+SELECT
+	id,
+	max(IF(subject='语文',score,0)) as '语文',
+	max(IF(subject='数学',score,0)) as '数学'
+FROM
+	t_score
+GROUP BY
+	id;
+
+select 
+  id,
+	max(case when subject='语文' then score else 0 end ) as '语文',
+	max(case when subject='数学' then score else 0 end ) as '数学'
+from 
+	t_score
+group by
+	id
+
+##列转行
+select * from t_score2;
+select id,'语文' as suject,语文 as score from t_score2
+union all
+select id,'数学' as subject,数学 as score from t_score2
+order by id
+```
+
+
+
 # 2. 事务
 
 场景：学工部整个部门解散了，该部门及部门下的员工都需要删除了。
@@ -1074,10 +1120,6 @@ type ：all全表扫描
 
   这个数据是基于哪张表的。
 
-- rows
-
-  rows 列显示 MySQL 认为它执行查询时必须检查的行数。越少越好！ 
-
 原文链接：https://blog.csdn.net/qq_27198345/article/details/116382587
 
 https://www.cnblogs.com/misscai/p/13121947.html
@@ -1086,7 +1128,7 @@ https://www.cnblogs.com/misscai/p/13121947.html
 
 面试题：三范式、反三范式
 
-![image-20230413100923766](assets/image-20230413100923766.png)
+![image-20230413100923766](https://gitee.com/shi-zian/cloudimage/raw/master/assets/image-20230413100923766.png)
 
 ## 3.4 语法
 
@@ -1130,7 +1172,7 @@ CREATE TABLE `student` (
 
 > 在创建表时，如果添加了主键和唯一约束，就会默认创建：主键索引、唯一约束
 >
-> ![image-20221209105846211](assets/image-20221209105846211.png)
+> ![image-20221209105846211](https://gitee.com/shi-zian/cloudimage/raw/master/assets/image-20221209105846211.png)
 
 
 

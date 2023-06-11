@@ -1588,7 +1588,7 @@ public class AliOSSUtils {
   1. 定义一个自动配置类，在自动配置类中将所要配置的bean都提前配置好
   2. 定义配置文件，把自动配置类的全类名定义在配置文件中（META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports）
 
-我们分析完自定义阿里云OSS自动配置的操作步骤了，下面我们就按照分析的步骤来实现自定义starter。
+我们分析完自定义阿里云OSS自动配置 的操作步骤了，下面我们就按照分析的步骤来实现自定义starter。
 
 
 

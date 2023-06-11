@@ -1,3 +1,7 @@
+[TOC]
+
+
+
 # 数据库开发-MySQL
 
 在上次学习的内容中，我们讲解了：
@@ -1354,7 +1358,7 @@ create table setmeal_dish
 
 ![image-20230322175100136](assets/image-20230322175100136.png)
 
-拓展：地址四个字节
+拓展：栈区地址四个字节
 
 synchronized原理
 
